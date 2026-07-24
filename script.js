@@ -20,9 +20,12 @@ async function searchGenre() {
 
     const randomIndex = Math.floor(Math.random() * genres.length);
     const randomGenre = genres[randomIndex];
-    console.log(randomGenre);
+    
+    const genreElement = document.getElementById("genre-result");
+    genreElement.textContent = randomGenre;
 
     await searchSong(randomGenre);
+    await searchAlbum(randomGenre);
 }
 
 async function searchSong(genre) {
@@ -35,11 +38,11 @@ async function searchSong(genre) {
     const randomIndex = Math.floor(Math.random() * tracks.length);
     const randomTrack = tracks[randomIndex];
 
-    console.log(randomTrack.name);
-    console.log(randomTrack.artist.name);
+    const songElement = document.getElementById("song-result");
+    songElement.textContent = randomTrack.name + " - " + randomTrack.artist.name;
 }
 
-async function searchSong(genre) {
+async function searchAlbum(genre) {
     const answer = await fetch ("https://ws.audioscrobbler.com/2.0/?method=tag.gettopalbums&tag=" 
         + genre + "&api_key=8d5e391006041eb0d8c1bda2b7631161&format=json")
     const data = await answer.json();
@@ -53,9 +56,11 @@ async function searchSong(genre) {
         return img.size === "extralarge";
     });
 
-    console.log(randomAlbum.name);
-    console.log(randomAlbum.artist.name);
-    console.log(cover["#text"]);
+    const albumResultElement = document.getElementById("album-result");
+    albumResultElement.textContent = randomAlbum.name + " - " + randomAlbum.artist.name;
+
+    const albumCoverElement = document.getElementById("album-cover");
+    albumCoverElement.src = cover["#text"];
 }
 
 searchGenre();
